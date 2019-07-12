@@ -434,6 +434,7 @@ bool dtCrowd::init(const int maxAgents, const float maxAgentRadius, dtNavMesh* n
 	m_activeAgents = (dtCrowdAgent**)dtAlloc(sizeof(dtCrowdAgent*)*m_maxAgents, DT_ALLOC_PERM);
 	if (!m_activeAgents)
 		return false;
+	m_numActiveAgents = 0;
 
 	m_agentAnims = (dtCrowdAgentAnimation*)dtAlloc(sizeof(dtCrowdAgentAnimation)*m_maxAgents, DT_ALLOC_PERM);
 	if (!m_agentAnims)
@@ -1052,6 +1053,7 @@ void dtCrowd::update(const float dt, dtCrowdAgentDebugInfo* debug)
 	
 	dtCrowdAgent** agents = m_activeAgents;
 	int nagents = getActiveAgents(agents, m_maxAgents);
+	m_numActiveAgents = nagents;
 
 	// Check that all agents still have valid paths.
 	checkPathValidity(agents, nagents, dt);
@@ -1387,7 +1389,13 @@ void dtCrowd::update(const float dt, dtCrowdAgentDebugInfo* debug)
 			dtVadd(ag->npos, ag->npos, ag->disp);
 		}
 	}
-	
+}
+
+
+void dtCrowd::doMove(float dt)
+{
+	int nagents = m_numActiveAgents;
+	dtCrowdAgent** agents = m_activeAgents;
 	for (int i = 0; i < nagents; ++i)
 	{
 		dtCrowdAgent* ag = agents[i];
