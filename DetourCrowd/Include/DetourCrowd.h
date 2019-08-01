@@ -118,6 +118,8 @@ struct dtCrowdAgent
 	/// True if the agent is active, false if the agent is in an unused slot in the agent pool.
 	bool active;
 
+	bool paused;
+
 	/// The type of mesh polygon the agent is traversing. (See: #CrowdAgentState)
 	unsigned char state;
 
@@ -218,7 +220,7 @@ class dtCrowd
 	dtPolyRef* m_pathResult;
 	int m_maxPathResult;
 	
-	float m_agentPlacementHalfExtents[3];
+	float m_ext[3];
 
 	dtQueryFilter m_filters[DT_CROWD_MAX_QUERY_FILTER_TYPE];
 
@@ -328,13 +330,9 @@ public:
 	/// @return The filter used by the crowd.
 	inline dtQueryFilter* getEditableFilter(const int i) { return (i >= 0 && i < DT_CROWD_MAX_QUERY_FILTER_TYPE) ? &m_filters[i] : 0; }
 
-	/// Gets the search halfExtents [(x, y, z)] used by the crowd for query operations. 
-	/// @return The search halfExtents used by the crowd. [(x, y, z)]
-	const float* getQueryHalfExtents() const { return m_agentPlacementHalfExtents; }
-
-	/// Same as getQueryHalfExtents. Left to maintain backwards compatibility.
-	/// @return The search halfExtents used by the crowd. [(x, y, z)]
-	const float* getQueryExtents() const { return m_agentPlacementHalfExtents; }
+	/// Gets the search extents [(x, y, z)] used by the crowd for query operations. 
+	/// @return The search extents used by the crowd. [(x, y, z)]
+	const float* getQueryExtents() const { return m_ext; }
 	
 	/// Gets the velocity sample count.
 	/// @return The velocity sample count.
@@ -460,4 +458,3 @@ A higher value will result in agents trying to stay farther away from each other
 the cost of more difficult steering in tight spaces.
 
 */
-

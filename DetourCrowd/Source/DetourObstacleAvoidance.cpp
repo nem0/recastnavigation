@@ -207,9 +207,6 @@ void dtFreeObstacleAvoidanceQuery(dtObstacleAvoidanceQuery* ptr)
 
 
 dtObstacleAvoidanceQuery::dtObstacleAvoidanceQuery() :
-	m_invHorizTime(0),
-	m_vmax(0),
-	m_invVmax(0),
 	m_maxCircles(0),
 	m_circles(0),
 	m_ncircles(0),
